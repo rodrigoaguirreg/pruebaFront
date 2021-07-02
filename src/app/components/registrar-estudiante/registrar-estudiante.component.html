@@ -1,0 +1,54 @@
+<mat-card class="matCard">
+<h1>Nuevo Estudiante</h1>
+<button mat-icon-button class="close-button" [mat-dialog-close]="true">X</button>
+<form [formGroup]="miFormulario">
+<mat-form-field appearance="fill" class="nombresInp">
+  <mat-label>Nombres</mat-label>
+  <input #nombres matInput placeholder="Ingresar nombre" maxlength="40" required formControlName="nombres">
+</mat-form-field>
+<mat-form-field appearance="fill" class="ApellidoPater">
+  <mat-label>Apellido Paterno</mat-label>
+  <input #apellidoPaterno matInput placeholder="Apellido Paterno" maxlength="40" required formControlName="apellidoPaterno">
+</mat-form-field>
+
+<br>
+
+<mat-form-field appearance="fill" class="ApellidoMater">
+  <mat-label>Apellido Materno</mat-label>
+  <input #apellidoMaterno matInput placeholder="Apellido Materno" maxlength="40" required formControlName="apellidoMaterno">
+</mat-form-field>
+
+<mat-form-field appearance="fill" class="GradoSelect">
+  <mat-label>GRADO</mat-label>
+  <mat-select>
+    <mat-option (click)="enviarDato(val.Grado)" *ngFor="let val of arrays" [value]="val.Grado">{{val.Grado}}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<br>
+
+<mat-form-field appearance="fill">
+  <mat-label>Choose a date</mat-label>
+  <input #datepicker matInput [matDatepicker]="picker">
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker ngDefaultControl  (selectedChanged)="onChange($event)"></mat-datepicker>
+</mat-form-field>
+
+<mat-form-field appearance="fill" class="EdadInput">
+  <mat-label>Edad</mat-label>
+  <input matInput placeholder="año(s) mes(es)">
+</mat-form-field>
+
+<br>
+
+<!-- <input type="file" accept=".jpg,.png" multiple> -->
+<mat-form-field appearance="fill" >
+  <mat-label>link</mat-label>
+  <input #imagenEstudiante matInput placeholder="Link de la imagen">
+</mat-form-field>
+<br>
+<br>
+<button mat-raised-button [disabled]="miFormulario.invalid" type="reset" color="primary" class="botonNuevo" (click)="AgregarEstudiante(nombres.value, apellidoPaterno.value, apellidoMaterno.value,datepicker.value,imagenEstudiante.value)">Nuevo</button>
+
+</form>
+</mat-card>

@@ -1,0 +1,22 @@
+<div>
+  <input matInput #valorInput class="form-control form-control-sm ml-3 w-75" type="search" placeholder="Search" [formControl]="search">
+  <mat-icon>search</mat-icon>
+</div>
+<hr>
+<br>
+<mat-card class="example-card" *ngFor="let estu of personas | search:valorInput.value">
+<br>
+  <img class="imagenPerfil" mat-card-image src="{{estu.imagen}}" alt="imagen estudiante">
+  <mat-card-content>
+    <h2>{{estu.nombre}} {{estu.apellidoPaterno}} {{estu.apellidoMaterno}}</h2>
+    <p>{{estu.anio}} año(s) {{estu.meses}} mes(es)</p>
+    <p>{{estu.grado}}</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="warn" (click)="borrarEstudiante(estu)">Borrar<mat-icon>delete</mat-icon></button>
+
+  </mat-card-actions>
+</mat-card>
+
+
+
