@@ -15,29 +15,41 @@ import { ModalConfirmacionComponent } from '../modal-confirmacion/modal-confirma
   styleUrls: ['./card-estudiantes.component.css']
 })
 export class CardEstudiantesComponent implements OnInit {
+  listaOCard:Boolean = true;
 
   search = new FormControl('');
   @Output('search') searchEmitter = new EventEmitter<string>();
 
   personas: any = [];
 
+  miCheckList: Boolean = false;
 
-  constructor(private _http: HttpClient,private _modal : MatDialog,private snackbar: MatSnackBar,private servicio: ServiciosService) { }
+  estudiantesEliminar: Esstudiante[] = [];
+
+  micambio = false;
+
+
+  constructor(private _modal : MatDialog,private snackbar: MatSnackBar,private servicio: ServiciosService) { }
 
   async ngOnInit(): Promise<any> {
-    const Esstudiantes = await this._http.get('https://60db9d53801dcb0017291256.mockapi.io/Estudiantes').pipe(m => m).toPromise()
+    const Esstudiantes = await this.servicio.obtenerEstudiantes();
     this.personas = Esstudiantes;
 
     this.search.valueChanges
     .pipe(
-      debounceTime(2500)
+      debounceTime(3000)
     ).subscribe(value => this.searchEmitter.emit(value));
+
 
 
     const nuevoarray = this.servicio.getArray();
 
-
+      //recibiendo array de registrarmodule y pusheando el array
     this.servicio.obsService$.pipe(filter(m => m != null)).subscribe(m => this.personas.push(m[0]));
+
+    //enviando array de card a list
+    this.servicio.obsService2$.next(this.personas)
+
 
   }
 
@@ -47,14 +59,8 @@ export class CardEstudiantesComponent implements OnInit {
       data: `¿Deseas eliminar al estudiante?`
     }).afterClosed().subscribe((confirmado: Boolean)=>{
         if(confirmado) {
-            this._http.delete(`https://60db9d53801dcb0017291256.mockapi.io/Estudiantes/${idEstudiante}`).subscribe({
-              next: data => {
-                console.log(data,' salio')
-              },
-              error: error=> {
-                console.log(error, "error aqui")
-              }
-            })
+            this.servicio.eliminarEstudiante(idEstudiante);
+
             this.snackbar.open('Estudiante retirado del aula', 'Cancelar', {
               duration: 3000
             });
@@ -68,4 +74,96 @@ export class CardEstudiantesComponent implements OnInit {
 
   }
 
+
+  vercambios(cambio,estudID){
+    console.log(cambio,estudID);
+    if(cambio && estudID){
+      this.estudiantesEliminar.push({estado: cambio,id: estudID})
+      console.log(this.estudiantesEliminar,'aqui');
+
+    }else if(cambio == false){
+      console.log(this.estudiantesEliminar,'aqui');
+      console.log(estudID,'aqui');
+      this.estudiantesEliminar =  this.estudiantesEliminar.filter(p => p.id != estudID)
+      console.log(this.estudiantesEliminar,'nuevo aqui');
+      console.log(cambio,'change');
+      this.micambio = cambio
+      console.log(this.micambio,'3');
+    }
+
+  }
+
+  EliminarTodosEstudiantes(){
+    this._modal.open(ModalConfirmacionComponent,{
+      data: `¿Deseas eliminar todos los estudiantes seleccionados?`
+    }).afterClosed().subscribe((confirmado: Boolean)=>{
+        if(confirmado) {
+          if(this.miCheckList){
+            for(let i = 0; i < this.personas.length; i++){
+              this.servicio.eliminarTodosEstudiantes(this.personas[i].id)
+            }
+            this.personas.splice(0,this.personas.length)
+            this.snackbar.open('Se eliminaron todos los estudiantes seleccionados', 'Cancelar', {
+              duration: 3000
+            });
+          } else if(this.estudiantesEliminar.length > 0){
+            for(let i = 0; i < this.estudiantesEliminar.length; i++){
+              this.servicio.eliminarEstudiante(this.estudiantesEliminar[i].id)
+
+              this.personas = this.personas.filter(p => p.id != this.estudiantesEliminar[i].id);
+              this.estudiantesEliminar =  this.estudiantesEliminar.filter(p => p.id != this.estudiantesEliminar[i].id)
+
+            }
+          }
+
+        }
+      })
+
+  }
+
+
+  //checklist
+
+  task = {
+    name: '',
+    completed: false,
+    color: 'primary',
+    subtasks: [
+      {name: '', completed: false, color: 'primary'}
+    ]
+  };
+
+  allComplete: boolean = false;
+
+  updateAllComplete() {
+    this.allComplete = this.task.subtasks != null && this.task.subtasks.every(t => t.completed);
+    this.miCheckList = this.allComplete
+  }
+
+  someComplete(): boolean {
+    if (this.task.subtasks == null) {
+      return false;
+    }
+    return this.task.subtasks.filter(t => t.completed).length > 0 && !this.allComplete;
+
+  }
+
+  setAll(completed: boolean) {
+    this.miCheckList = completed;
+    this.allComplete = completed;
+    if (this.task.subtasks == null) {
+      return;
+    }
+    this.task.subtasks.forEach(t => t.completed = completed);
+  }
+
+  cambiar(){
+    this.listaOCard = !this.listaOCard
+  }
+
+}
+
+interface Esstudiante {
+  estado:boolean;
+  id: number;
 }

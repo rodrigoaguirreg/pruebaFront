@@ -26,11 +26,16 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 
+
 import { HomeComponent } from './components/home/home.component';
 import { RegistrarEstudianteComponent } from './components/registrar-estudiante/registrar-estudiante.component';
 import { CardEstudiantesComponent } from './components/card-estudiantes/card-estudiantes.component';
 import { PipesPipe } from './components/pipes/pipes.pipe';
 import { ModalConfirmacionComponent } from './components/modal-confirmacion/modal-confirmacion.component';
+
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { ListaEstudiantesComponent } from './components/lista-estudiantes/lista-estudiantes.component';
+import { NoImagePipe } from './components/pipes/no-image.pipe';
 
 @NgModule({
   declarations: [
@@ -41,6 +46,8 @@ import { ModalConfirmacionComponent } from './components/modal-confirmacion/moda
     CardEstudiantesComponent,
     PipesPipe,
     ModalConfirmacionComponent,
+    ListaEstudiantesComponent,
+    NoImagePipe,
   ],
   imports: [
     BrowserModule,
@@ -59,7 +66,8 @@ import { ModalConfirmacionComponent } from './components/modal-confirmacion/moda
     MatNativeDateModule,
     MatCardModule,
     ReactiveFormsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]

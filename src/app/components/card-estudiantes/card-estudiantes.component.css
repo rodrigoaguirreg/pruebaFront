@@ -4,8 +4,10 @@
   border: black 1px solid;
   margin-left: 30px;
   float: left;
-  width: 25%;
+  width: 20%;
   margin-bottom: 10px;
+  max-height: 600px;
+
 
 }
 
@@ -15,10 +17,10 @@
 }
 
 .imagenPerfil{
-  max-width: 270px;
-  min-height: 150px;
+  max-width: 250px;
+  max-height: 150px;
   margin-top: -10px;
-  border-radius: 80px;
+
 }
 
 .form-control{
@@ -26,4 +28,28 @@
   margin-top: -30px;
   margin-bottom: 20px;
   margin-left: 120px;
+
+  height: 50px;
+  border: none;
+  font-size: 10pt;
+  float: left;
+  padding-left: 45px;
+  border-bottom: black 1px solid;
+
+
+}
+
+.eliminarAula{
+      right: -145px;
+    top: -10px;
+}
+
+::ng-deep .mat-checkbox-inner-container-no-side-margin{
+  top: -6px;
+  right: -138px;
+}
+
+.botonCambiarVista{
+  background-color: #9863f2;
+  right: -185px;
 }

@@ -1,0 +1,47 @@
+<table>
+  <thead>
+    <tr>
+      <th class="divcheck">
+        <button [disabled]="estudiantesEliminar.length == 0" mat-raised-button color="warn" (click)="eliminarCheckBox()">Eliminar</button>
+        <mat-checkbox class="example-margin"
+        [color]="task.color"
+        (change)="setAll($event.checked)">
+        </mat-checkbox>
+      </th>
+
+    </tr>
+    <tr>
+      <th scope="col">Seleccionar</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Apellido Paterno</th>
+      <th scope="col">Apellido Materno</th>
+      <th scope="col">Edad</th>
+      <th scope="col">Grado</th>
+      <th scope="col">Eliminar Estudiante</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="tablaDatos" *ngFor="let estudi of EstudiantesArray[0]">
+      <td>
+        <mat-checkbox [checked]="allComplete" (ngModelChange)="updateAllComplete()" (change)="vercambios($event.checked,estudi.id)"></mat-checkbox>
+      </td>
+      <td>{{estudi.nombre}}</td>
+      <td>{{estudi.apellidoPaterno}}</td>
+      <td>{{estudi.apellidoMaterno}}</td>
+      <td>{{estudi.anio}} año(s) {{estudi.meses}} mes(es)</td>
+      <td>{{estudi.grado}}</td>
+      <td>
+    <button class="botonlista" mat-mini-fab color="warn" (click)="borrarEstudianteLista(estudi)"><mat-icon>delete</mat-icon></button>
+      </td>
+    </tr>
+  </tbody>
+
+</table>
+
+
+<section class="example-section">
+  <span class="example-list-section">
+
+  </span>
+
+</section>

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { from, of } from 'rxjs';
 import { mapTo, map, catchError, pluck, filter  } from 'rxjs/operators';
 import { ServiciosService } from 'src/app/services/servicios.service';
@@ -23,12 +24,20 @@ export class RegistrarEstudianteComponent implements OnInit {
 
   estudiantesArray : Estudiante[] = [];
 
-  constructor(private _http : HttpClient,public _dialogRef: MatDialogRef<RegistrarEstudianteComponent>, private servicio: ServiciosService) { }
+  obteniendoEstudiantes;
+
+  hoy = new Date();
+
+  aniosDate;
+  mesesDate;
+
+  reader = new FileReader();
+
+
+  constructor(private _http : HttpClient,public _dialogRef: MatDialogRef<RegistrarEstudianteComponent>, private servicio: ServiciosService,private snackbar: MatSnackBar) { }
 
   async ngOnInit(): Promise<any> {
-    const grados = await this._http.get('https://60db9d53801dcb0017291256.mockapi.io/Grados').pipe(
-      map(arm => arm),
-      ).toPromise()
+    const grados = await this.servicio.obtenerGradoEstudiantes();
       this.arrays = grados;
       this.arrays.sort(function(o1,o2){
         if(o1.Grado > o2.Grado){
@@ -39,6 +48,8 @@ export class RegistrarEstudianteComponent implements OnInit {
       return 0
       })
 
+      const obteniendoEstudidantesGet = await this.servicio.obtenerEstudiantes();
+      this.obteniendoEstudiantes = obteniendoEstudidantesGet;
 
 
   }
@@ -53,39 +64,84 @@ export class RegistrarEstudianteComponent implements OnInit {
     this.gradoEstudiante = valor;
 
   }
-  onChange(event){
-    console.log(event,'eventoooo');
-  }
-  AgregarEstudiante(nombres, apellidoPatern , apellidoMater,datepiker,imagen){
+  onChange(event$){
+    // console.log(event$.getMonth() + 1,'mes - 1');
+    // console.log(this.hoy.getMonth(),'mes - 1');
+    // console.log(event$.getDate(),'dia ');
+    // console.log(event$.getFullYear(),'año ');
+    this.aniosDate = this.hoy.getFullYear() - event$.getFullYear();
 
-    //obtener edad
+    console.log(this.hoy.getFullYear() - event$.getFullYear(),"Años")
 
-    const hoy = new Date();
+    this.mesesDate = this.hoy.getMonth() - event$.getMonth()
 
-    const convertAge = new Date(datepiker);
-    const timeDiff = Math.abs(Date.now() - convertAge.getTime());
-    this.edadEstudiante = Math.floor((timeDiff / (1000 * 3600 * 24))/365);
-
-
-
-    if( hoy.getDay() > convertAge.getDay()){
-      this.diferenciaMeses = (hoy.getMonth() - convertAge.getMonth()) - 1;
-    }  else{
-      this.diferenciaMeses = (hoy.getMonth() - convertAge.getMonth())
+    if(this.hoy.getMonth() - event$.getMonth() < 0){
+      this.mesesDate = 12 + this.mesesDate;
+      this.aniosDate = this.aniosDate - 1
     }
 
-    //termina eddad
+    if(this.hoy.getDate() - event$.getDate() < 0 ){
+      this.mesesDate = this.mesesDate - 1;
+    }
+    console.log(this.aniosDate,'anios corregidos');
+    console.log(this.mesesDate,'meses corregido');
+    console.log(this.hoy.getDate() - event$.getDate(),'meses corregido');
 
-      this._http.post('https://60db9d53801dcb0017291256.mockapi.io/Estudiantes',{nombre: nombres, apellidoPaterno: apellidoPatern, apellidoMaterno: apellidoMater,fecha: datepiker, grado: this.gradoEstudiante, anio: this.edadEstudiante, meses:this.diferenciaMeses,imagen: imagen }).subscribe(console.log)
 
+  }
 
+//enviar imagen base64
 
-      this.estudiantesArray.push({nombre: nombres,apellidoPaterno: apellidoPatern,apellidoMaterno: apellidoMater,grado: this.gradoEstudiante,anio: this.edadEstudiante,meses: this.diferenciaMeses,imagen})
+handleUpload(event) {
+  const file = event.target.files[0];
+  this.reader.readAsDataURL(file);
+  this.reader.onload = () => {
+      console.log(this.reader.result);
+  };
+}
 
+//termina imagen
 
-      this.servicio.obsService$.next(this.estudiantesArray)
+  AgregarEstudiante(nombres, apellidoPatern , apellidoMater,datepiker){
 
-      this._dialogRef.close()
+    if(this.obteniendoEstudiantes.length == 0){
+          this.servicio.crearNuevoEstudiante(nombres, apellidoPatern, apellidoMater, datepiker, this.gradoEstudiante, this.aniosDate, this.mesesDate, this.reader.result);
+          //agregando estudiante a array
+          this.estudiantesArray.push({nombre: nombres,apellidoPaterno: apellidoPatern,apellidoMaterno: apellidoMater,grado: this.gradoEstudiante,anio: this.aniosDate,meses: this.mesesDate, imagen: this.reader.result})
+
+          //transportando array a modulo card
+          this.servicio.obsService$.next(this.estudiantesArray)
+          console.log("aqui estoyX2");
+          this._dialogRef.close()
+    } else{
+      for(let i = 0; i < this.obteniendoEstudiantes.length; i++){
+
+          console.log(nombres,'nombre obtenio');
+          //agregarnoestudiante a bd
+          console.log(this.estudiantesArray,'array');
+          if((this.obteniendoEstudiantes[i].nombre).includes(nombres) && (this.obteniendoEstudiantes[i].apellidoPaterno).includes(apellidoPatern) && (this.obteniendoEstudiantes[i].apellidoMaterno).includes(apellidoMater)){
+            this.snackbar.open('Este estudiante ya se encuentra registrado', 'Cancelar', {
+              duration: 3000
+            });
+            console.log("aqui estoy");
+            break;
+          }else if(i == this.obteniendoEstudiantes.length - 1 ){
+            console.log("entro aqui");
+            this.servicio.crearNuevoEstudiante(nombres, apellidoPatern, apellidoMater, datepiker, this.gradoEstudiante, this.aniosDate, this.mesesDate, this.reader.result);
+            //agregando estudiante a array
+            this.estudiantesArray.push({nombre: nombres,apellidoPaterno: apellidoPatern,apellidoMaterno: apellidoMater,grado: this.gradoEstudiante,anio: this.aniosDate,meses: this.mesesDate,imagen: this.reader.result})
+
+            //transportando array a modulo card
+            this.servicio.obsService$.next(this.estudiantesArray)
+            console.log("aqui estoyX2");
+            this._dialogRef.close()
+            break;
+          }
+
+          }
+    }
+
+      // }
 
   }
 
@@ -98,5 +154,5 @@ interface Estudiante {
   grado ?: string;
   anio: number;
   meses:number;
-  imagen:number;
+  imagen ?: any;
 }
