@@ -8,6 +8,7 @@ import { from } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 import { ServiciosService } from 'src/app/services/servicios.service';
 import { ModalConfirmacionComponent } from '../modal-confirmacion/modal-confirmacion.component';
+import { RegistrarEstudianteComponent } from '../registrar-estudiante/registrar-estudiante.component';
 
 @Component({
   selector: 'app-card-estudiantes',
@@ -119,6 +120,15 @@ export class CardEstudiantesComponent implements OnInit {
         }
       })
 
+  }
+
+  editarEstudiante(estudi){
+    console.log(estudi);
+    this._modal.open(RegistrarEstudianteComponent,{
+      width:'600px',
+      disableClose:true
+    }
+    )
   }
 
 

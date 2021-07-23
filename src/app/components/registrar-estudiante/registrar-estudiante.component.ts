@@ -33,6 +33,8 @@ export class RegistrarEstudianteComponent implements OnInit {
 
   reader = new FileReader();
 
+  idestudiante: any = [];
+
 
   constructor(private _http : HttpClient,public _dialogRef: MatDialogRef<RegistrarEstudianteComponent>, private servicio: ServiciosService,private snackbar: MatSnackBar) { }
 
@@ -47,6 +49,7 @@ export class RegistrarEstudianteComponent implements OnInit {
         }
       return 0
       })
+
 
       const obteniendoEstudidantesGet = await this.servicio.obtenerEstudiantes();
       this.obteniendoEstudiantes = obteniendoEstudidantesGet;
@@ -96,18 +99,19 @@ handleUpload(event) {
   const file = event.target.files[0];
   this.reader.readAsDataURL(file);
   this.reader.onload = () => {
-      console.log(this.reader.result);
   };
 }
 
 //termina imagen
 
-  AgregarEstudiante(nombres, apellidoPatern , apellidoMater,datepiker){
+  async AgregarEstudiante(nombres, apellidoPatern , apellidoMater,datepiker): Promise<any>{
 
     if(this.obteniendoEstudiantes.length == 0){
-          this.servicio.crearNuevoEstudiante(nombres, apellidoPatern, apellidoMater, datepiker, this.gradoEstudiante, this.aniosDate, this.mesesDate, this.reader.result);
+          const estudiantecreado = this.servicio.crearNuevoEstudiante(nombres, apellidoPatern, apellidoMater, datepiker, this.gradoEstudiante, this.aniosDate, this.mesesDate, this.reader.result);
           //agregando estudiante a array
-          this.estudiantesArray.push({nombre: nombres,apellidoPaterno: apellidoPatern,apellidoMaterno: apellidoMater,grado: this.gradoEstudiante,anio: this.aniosDate,meses: this.mesesDate, imagen: this.reader.result})
+          this.idestudiante = estudiantecreado;
+          console.log(estudiantecreado);
+          this.estudiantesArray.push({id: this.idestudiante.id,nombre: nombres,apellidoPaterno: apellidoPatern,apellidoMaterno: apellidoMater,grado: this.gradoEstudiante,anio: this.aniosDate,meses: this.mesesDate, imagen: this.reader.result})
 
           //transportando array a modulo card
           this.servicio.obsService$.next(this.estudiantesArray)
@@ -127,9 +131,16 @@ handleUpload(event) {
             break;
           }else if(i == this.obteniendoEstudiantes.length - 1 ){
             console.log("entro aqui");
-            this.servicio.crearNuevoEstudiante(nombres, apellidoPatern, apellidoMater, datepiker, this.gradoEstudiante, this.aniosDate, this.mesesDate, this.reader.result);
+
+            const estudiantecreado2 = await this.servicio.crearNuevoEstudiante(nombres, apellidoPatern, apellidoMater, datepiker, this.gradoEstudiante, this.aniosDate, this.mesesDate, this.reader.result);
+            this.idestudiante = estudiantecreado2;
+            console.log(this.idestudiante.id,'ide22222');
             //agregando estudiante a array
-            this.estudiantesArray.push({nombre: nombres,apellidoPaterno: apellidoPatern,apellidoMaterno: apellidoMater,grado: this.gradoEstudiante,anio: this.aniosDate,meses: this.mesesDate,imagen: this.reader.result})
+          //   console.log(idEstudiante2,'hereeeee1');
+          //   const idesegundo = idEstudiante2;
+          // console.log(idesegundo[0],'hereeeee');
+
+            this.estudiantesArray.push({id: this.idestudiante.id,nombre: nombres,apellidoPaterno: apellidoPatern,apellidoMaterno: apellidoMater,grado: this.gradoEstudiante,anio: this.aniosDate,meses: this.mesesDate,imagen: this.reader.result})
 
             //transportando array a modulo card
             this.servicio.obsService$.next(this.estudiantesArray)
@@ -148,6 +159,7 @@ handleUpload(event) {
 }
 
 interface Estudiante {
+  id: number;
   nombre: string;
   apellidoPaterno: string;
   apellidoMaterno: string;

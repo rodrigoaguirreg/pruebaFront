@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class NoImagePipe implements PipeTransform {
 
   transform(noImage: string): string {
-    if (this.get_extension(noImage)) {
+    if (noImage) {
       return `${noImage}`
     }
     else {
@@ -14,7 +14,5 @@ export class NoImagePipe implements PipeTransform {
     }
   }
 
-  get_extension(filename) {
-    return filename.slice(0, 5);
-  }
+
 }
