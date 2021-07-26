@@ -1,0 +1,51 @@
+<mat-card class="matCard">
+<h1>Nuevo Estudiante</h1>
+<button mat-icon-button class="close-button" [mat-dialog-close]="true">X</button>
+<form [formGroup]="miFormulario">
+<mat-form-field appearance="fill" class="nombresInp">
+  <mat-label>Nombres</mat-label>
+  <input #nombres matInput placeholder="Ingresar nombre" maxlength="40" required formControlName="nombres">
+</mat-form-field>
+<mat-form-field appearance="fill" class="ApellidoPater">
+  <mat-label>Apellido Paterno</mat-label>
+  <input #apellidoPaterno matInput placeholder="Apellido Paterno" maxlength="40" required formControlName="apellidoPaterno">
+</mat-form-field>
+
+<br>
+
+<mat-form-field appearance="fill" class="ApellidoMater">
+  <mat-label>Apellido Materno</mat-label>
+  <input #apellidoMaterno matInput placeholder="Apellido Materno" maxlength="40" required formControlName="apellidoMaterno">
+</mat-form-field>
+
+<mat-form-field appearance="fill" class="GradoSelect">
+  <mat-label>GRADO</mat-label>
+  <mat-select>
+    <mat-option (click)="enviarDato(val.Grado)" *ngFor="let val of arrays" [value]="val.Grado">{{val.Grado}}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<br>
+
+<mat-form-field appearance="fill">
+  <mat-label>Seleeciona fecha</mat-label>
+  <input #datepicker (dateChange)="onChange($event.value)" matInput [matDatepicker]="picker" data-date-format='DD-MM-YYYY'>
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker ngDefaultControl ></mat-datepicker>
+</mat-form-field>
+
+<mat-form-field floatLabel="always" appearance="fill" class="EdadInput">
+  <mat-label>Edad</mat-label>
+  <input matInput placeholder="{{aniosDate}} año(s) {{mesesDate}}mes(es)">
+</mat-form-field>
+
+<br>
+
+<!-- <input type="file" accept=".jpg,.png" multiple> -->
+<input type="file" id="miArchivo" (change)="handleUpload($event)">
+<span class="nombreArchivo">{{nombreArchivo}}</span>
+<br>
+<br>
+<button mat-raised-button [disabled]="miFormulario.invalid" type="reset" color="primary" class="botonNuevo" (click)="AgregarEstudiante(nombres.value, apellidoPaterno.value, apellidoMaterno.value,datepicker.value)">Nuevo</button>
+</form>
+</mat-card>

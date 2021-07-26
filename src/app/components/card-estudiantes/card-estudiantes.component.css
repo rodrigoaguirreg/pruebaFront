@@ -1,0 +1,92 @@
+.container-3{
+
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-around;
+
+}
+.pruebita{
+  display: flex;
+    flex-direction: column;
+}
+
+.example-card {
+  align-items: center;
+  text-align: center;
+  border: black 1px solid;
+  margin-left: 30px;
+  float: left;
+  width: 20%;
+  margin-bottom: 10px;
+  max-height: 600px;
+  position: relative;
+
+
+}
+.spanCard{
+  position: absolute;
+  top: 6px;
+  right: 8px;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+
+.imagenPerfil{
+  max-width: 250px;
+  max-height: 150px;
+  margin-top: -10px;
+
+}
+
+.form-control{
+  width: 100%;
+  outline: none;
+  /* margin-top: -30px;
+  margin-bottom: 20px;
+  margin-left: 120px; */
+  /* display: flex;
+  align-items: center;
+   */
+
+
+  height: 50px;
+  border: none;
+  font-size: 10pt;
+  /* float: left; */
+  /* padding-left: 45px; */
+  border-bottom: black 1px solid;
+}
+.searchIcon{
+  width: 65%;
+  position: relative;
+}
+.searchDibujito{
+  position: absolute;
+  top: 20px;
+  right: 0;
+}
+/* 
+.eliminarAula{
+      right: -145px;
+    top: 0px;
+} */
+
+/* ::ng-deep .mat-checkbox-inner-container-no-side-margin{
+  top: -6px;
+  right: -138px;
+} */
+.example-list-section{
+  margin-right: 10px;
+  /* top: -6px; */
+  /* right: -138px; */
+  /* position: absolute; */
+}
+
+.botonCambiarVista{
+  background-color: #9863f2;
+  /* right: -185px; */
+}

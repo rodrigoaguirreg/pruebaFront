@@ -1,0 +1,38 @@
+.nombresInp{
+
+}
+
+.ApellidoPater{
+  margin-left: 70px;
+
+}
+
+.GradoSelect{
+  margin-left: 70px;
+}
+
+.EdadInput{
+  margin-left: 33px;
+  opacity: 0.5;
+}
+
+.matCard{
+box-shadow: none;
+}
+
+.close-button{
+  border: none;
+  float: right;
+  font-size: 20px;
+  right: 0px;
+  top: -55px;
+}
+
+input#miArchivo{
+  color: transparent;
+}
+
+.nombreArchivo{
+  position: absolute;
+  left: 150px;
+}

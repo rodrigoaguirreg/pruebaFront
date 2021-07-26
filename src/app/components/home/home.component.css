@@ -1,0 +1,12 @@
+.homeFront{
+  margin-top: 20px;
+  float: left;
+  display: flex;
+}
+.home-estudiantes{
+  margin-right: 750px;
+}
+.botonNuevo{
+  margin-left: 250px;
+  padding: 5px;
+}
