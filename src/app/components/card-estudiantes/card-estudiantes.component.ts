@@ -166,7 +166,7 @@ export class CardEstudiantesComponent implements OnInit {
     subtasks: [
       {name: '', completed: false, color: 'primary'}
     ]
-  };
+  }
 
   allComplete: boolean = false;
 
