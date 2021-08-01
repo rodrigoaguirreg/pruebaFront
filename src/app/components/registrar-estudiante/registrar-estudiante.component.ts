@@ -144,6 +144,7 @@ handleUpload(event) {
 
             //transportando array a modulo card
             this.servicio.obsService$.next(this.estudiantesArray)
+            console.log("aqui estoyX2");
             this._dialogRef.close();
             break;
           }
