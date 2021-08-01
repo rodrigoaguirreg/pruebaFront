@@ -12,6 +12,8 @@ export class ServiciosService {
   arrayDelService;
   obsService$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   obsService2$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  obsService3$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  obsService4$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   // idEstudiante;
 
 
@@ -25,14 +27,8 @@ export class ServiciosService {
     return this.arrayDelService;
   }
 
-  crearNuevoEstudiante(nombres,apellidoPatern,apellidoMater,datepiker,gradoEstudiante,edadEstudiante,diferenciaMeses,diaHoy,imagen){
-    // const idnumber = [];
-
-    // this._http.post('https://60db9d53801dcb0017291256.mockapi.io/Estudiantes',{nombre: nombres, apellidoPaterno: apellidoPatern, apellidoMaterno: apellidoMater,fecha: datepiker, grado: gradoEstudiante, anio: edadEstudiante, meses: diferenciaMeses,imagen: imagen })
-    // .pipe(pluck('id'),map(m=> idnumber.push(m)))
-    // .subscribe(m => console.log(m));
-    // return idnumber;
-    return this._http.post('https://60db9d53801dcb0017291256.mockapi.io/Estudiantes',{nombre: nombres, apellidoPaterno: apellidoPatern, apellidoMaterno: apellidoMater,fecha: datepiker, grado: gradoEstudiante, anio: edadEstudiante, meses: diferenciaMeses,actual: diaHoy,imagen: imagen })
+  crearNuevoEstudiante(personas: Estudiante,datepiker){
+    return this._http.post('https://60db9d53801dcb0017291256.mockapi.io/Estudiantes',personas)
               .pipe(m=>m).toPromise();
     // //return id
   }
@@ -73,7 +69,25 @@ export class ServiciosService {
     });
   }
 
+  editarEstudiante(idEstudiante,personas: Estudiante){
+    return this._http.put(`https://60db9d53801dcb0017291256.mockapi.io/Estudiantes/${idEstudiante}`,personas);
+  }
+
 }
 interface id {
   id: any;
+}
+
+interface Estudiante {
+  id?: number;
+  nombre: string;
+  apellidoPaterno: string;
+  apellidoMaterno: string;
+  fecha ?: string;
+  grado ?: string;
+  anio: number;
+  meses:number;
+  actual?:string;
+  imagen ?: any;
+  firma ?: any;
 }

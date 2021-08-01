@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { filter } from 'rxjs/operators';
-import { ServiciosService } from 'src/app/services/servicios.service';
-import { ModalConfirmacionComponent } from '../modal-confirmacion/modal-confirmacion.component';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog                                   } from '@angular/material/dialog';
+import { MatPaginator                                } from '@angular/material/paginator';
+import { MatSnackBar                                 } from '@angular/material/snack-bar';
+import { MatTableDataSource                          } from '@angular/material/table';
+import { filter                                      } from 'rxjs/operators';
+import { ServiciosService                            } from 'src/app/services/servicios.service';
+import { ModalConfirmacionComponent                  } from '../modal-confirmacion/modal-confirmacion.component';
 
 
 export interface PeriodicElement {
-  name: string;
+  name    : string;
   position: number;
-  weight: number;
-  symbol: string;
+  weight  : number;
+  symbol  : string;
 }
 
 
@@ -21,28 +23,19 @@ export interface PeriodicElement {
 })
 export class ListaEstudiantesComponent implements OnInit {
 
-
-  displayedColumns: string[] = ['seleccionar', 'nombre', 'apellidoPaterno', 'apellidoMaterno','edad','grado','FechaCreacion','eliminarEstudiante'];
-  dataSource;
-
-
-  columnas = [
-    {titulo: "Seleccionar"},
-    {titulo: "Nombre"},
-    {titulo: "Apellido Paterno"},
-    {titulo: "Apellido Materno"},
-    {titulo: "Edad"},
-    {titulo: "Grado"},
-    {titulo: "FechaCreacion"},
-    {titulo: "Eliminar Estudiante"},
-  ]
-
-
+  displayedColumns: string[] = ['seleccionar', 'nombre', 'apellidoPaterno',
+                                'apellidoMaterno','edad','grado',
+                                'FechaCreacion','eliminarEstudiante','editarEstudiante'];
+  dataSource = new MatTableDataSource<any>([]);
+  
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  
+  
   EstudiantesArray = [];
   estudiantesEliminar: Esstudiante[] = [];
-
+  
   micambio = false;
-
+  
   item = {
     selected: false
   }
@@ -51,7 +44,8 @@ export class ListaEstudiantesComponent implements OnInit {
 
   ngOnInit(): void {
     this.servicio.obsService2$.pipe(filter(m => m != null)).subscribe(m => this.EstudiantesArray.push(m));
-    this.dataSource = this.EstudiantesArray[0];
+    this.dataSource.data = this.EstudiantesArray[0];
+    this.dataSource.paginator = this.paginator;
   }
 
   borrarEstudianteLista(estudiante){
@@ -91,11 +85,10 @@ export class ListaEstudiantesComponent implements OnInit {
   }
 
   setAll(completed: boolean) {
+    this.micambio = completed;
     this.allComplete = completed;
-    if (this.allComplete) {
-      this.micambio = this.allComplete;
-    }
-
+    this.servicio.obsService4$.next(this.micambio);
+    
 
   }
   vercambios(cambio,estudID){

@@ -27,6 +27,8 @@ export class CardEstudiantesComponent implements OnInit {
 
   micambio = false;
 
+  datosAlumnoEditar : Estudiante[] = [];
+
 
   constructor(private _modal : MatDialog,private snackbar: MatSnackBar,private servicio: ServiciosService) { }
 
@@ -45,6 +47,9 @@ export class CardEstudiantesComponent implements OnInit {
 
     //enviando array de card a list
     this.servicio.obsService2$.next(this.personas)
+
+    this.servicio.obsService4$.pipe(filter(m => m != null)).subscribe(m => this.miCheckList = m);
+    
 
   }
 
@@ -113,11 +118,42 @@ export class CardEstudiantesComponent implements OnInit {
   }
 
   editarEstudiante(estudi){
+      this.datosAlumnoEditar.push({id             : estudi.id             ,nombre         : estudi.nombre,
+                                   apellidoPaterno: estudi.apellidoPaterno,apellidoMaterno: estudi.apellidoMaterno,
+                                   grado          : estudi.grado          ,anio           : estudi.anio,
+                                   meses          : estudi.meses          , actual: estudi.fecha,
+                                   imagen         : estudi.imagen, 
+                                  });
+
+    this.servicio.obsService3$.next(this.datosAlumnoEditar)
+
     this._modal.open(RegistrarEstudianteComponent,{
       width:'600px',
-      disableClose:true
-    }
-    )
+      data:{
+        boolean: true,
+        id: estudi.id,
+        nombre: estudi.nombre,
+        apellidoPaterno: estudi.apellidoPaterno,
+        apellidoMaterno: estudi.apellidoMaterno,
+        grado : estudi.grado,
+        anio: estudi.anio,
+        meses: estudi.meses,
+        fecha: estudi.fecha,
+        imagen : estudi.imagen
+      }
+      ,disableClose:true
+    }).afterClosed().subscribe(result => {
+      if(result.nombre){
+        this.personas[estudi.id - 1].nombre = result.nombre;
+        this.personas[estudi.id - 1].apellidoPaterno = result.apellidoPaterno;
+        this.personas[estudi.id - 1].apellidoMaterno = result.apellidoMaterno;
+        this.personas[estudi.id - 1].grado = result.grado;
+        this.personas[estudi.id - 1].anio = result.anio;
+        this.personas[estudi.id - 1].meses = result.meses;
+        this.personas[estudi.id - 1].fecha = result.fecha;
+        this.personas[estudi.id - 1].imagen = result.imagen;
+      }
+    })
   }
 
 
@@ -158,4 +194,16 @@ export class CardEstudiantesComponent implements OnInit {
 interface Esstudiante {
   estado:boolean;
   id    : number;
+}
+interface Estudiante {
+  id: number;
+  nombre: string;
+  apellidoPaterno: string;
+  apellidoMaterno: string;
+  grado ?: string;
+  anio: number;
+  meses:number;
+  actual?:string;
+  imagen ?: any;
+  firma ?: any;
 }

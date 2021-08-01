@@ -1,6 +1,6 @@
 <div class="container-3">
   <div class="searchIcon">
-  <input matInput #valorInput class="form-control form-control-sm ml-3 w-75" id="search" type="search" placeholder="Search" [formControl]="search">
+  <input matInput #valorInput class="form-control form-control-sm ml-3 w-75" id="search" type="search" placeholder="Buscar estudiante" [formControl]="search">
   <mat-icon class="searchDibujito">search</mat-icon>
 </div>
 <div class="pruebita">
@@ -31,6 +31,7 @@
 
 
   <img class="imagenPerfil" mat-card-image [src]="estu.imagen | noImage" alt="imagen estudiante">
+  <img [src]="estu.firma" alt="firma">
   <mat-card-content>
     <h2>{{estu.nombre}} {{estu.apellidoPaterno}} {{estu.apellidoMaterno}}</h2>
     <p>{{estu.anio}} año(s) {{estu.meses}} mes(es)</p>

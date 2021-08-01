@@ -34,5 +34,24 @@ input#miArchivo{
 
 .nombreArchivo{
   position: absolute;
-  left: 150px;
+  left: 230px;
+}
+.imagenAlumno{
+  max-width: 70px;
+  left: 170px;
+  top: -10px;
+
+  position: absolute;
+}
+.inputFileDiv{
+  position: relative ;
+}
+.botonClase{
+  text-align: center;
+}
+.botonNuevo{
+  width: 150px;
+}
+.signaturePad{
+  margin: black 1px solid;
 }
