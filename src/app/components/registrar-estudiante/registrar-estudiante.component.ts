@@ -71,7 +71,7 @@ export class RegistrarEstudianteComponent implements OnInit {
                     this.aniosDate = this.data.anio;
                     this.mesesDate = this.data.meses;
                     this.imagenCargada = this.data.imagen;
-                    console.log(this.data.fecha)
+                    
                     this.miFormulario.setValue({
                       nombres: this.data.nombre,
                       apellidoPaterno: this.data.apellidoPaterno,
