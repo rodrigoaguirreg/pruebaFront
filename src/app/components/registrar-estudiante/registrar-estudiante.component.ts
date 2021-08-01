@@ -176,7 +176,7 @@ async AgregarEstudiante(nombres, apellidoPatern , apellidoMater,datepiker): Prom
                                 });
       //transportando array a modulo card
       this.servicio.obsService$.next(this.estudiantesArray);
-      this._dialogRef.close();
+      this._dialogRef.close()
   } else{
     for(let i = 0; i < this.obteniendoEstudiantes.length; i++){
 
