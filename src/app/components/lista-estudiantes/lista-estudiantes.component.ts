@@ -6,6 +6,7 @@ import { MatTableDataSource                          } from '@angular/material/t
 import { filter                                      } from 'rxjs/operators';
 import { ServiciosService                            } from 'src/app/services/servicios.service';
 import { ModalConfirmacionComponent                  } from '../modal-confirmacion/modal-confirmacion.component';
+import { RegistrarEstudianteComponent } from '../registrar-estudiante/registrar-estudiante.component';
 
 
 export interface PeriodicElement {
@@ -108,7 +109,41 @@ export class ListaEstudiantesComponent implements OnInit {
     }
   }
 
+  editarEstudiante(estudi){
+    this._modal.open(RegistrarEstudianteComponent,{
+      width:'600px',
+      data:{
+        boolean: true,
+        id: estudi.id,
+        nombre: estudi.nombre,
+        apellidoPaterno: estudi.apellidoPaterno,
+        apellidoMaterno: estudi.apellidoMaterno,
+        grado : estudi.grado,
+        anio: estudi.anio,
+        meses: estudi.meses,
+        fecha: estudi.fecha,
+        imagen : estudi.imagen,
+        firma: estudi.firma
+      }
+      ,disableClose:true
+    }).afterClosed().subscribe(result => {
+      if(result.nombre){
+        this.EstudiantesArray[0][estudi.id - 1].nombre = result.nombre;
+        this.EstudiantesArray[0][estudi.id - 1].apellidoPaterno = result.apellidoPaterno;
+        this.EstudiantesArray[0][estudi.id - 1].apellidoMaterno = result.apellidoMaterno;
+        this.EstudiantesArray[0][estudi.id - 1].grado = result.grado;
+        this.EstudiantesArray[0][estudi.id - 1].anio = result.anio;
+        this.EstudiantesArray[0][estudi.id - 1].meses = result.meses;
+        this.EstudiantesArray[0][estudi.id - 1].fecha = result.fecha;
+        this.EstudiantesArray[0][estudi.id - 1].imagen = result.imagen;
+        this.EstudiantesArray[0][estudi.id - 1].firma = result.firma;
+      }
+    })
+  }
+
 }
+
+
 
 interface Task {
   name: string;

@@ -51,14 +51,15 @@ export class RegistrarEstudianteComponent implements OnInit {
     penColor: 'rgb(66,133,244)',
     canvasWidth: 150,
     canvasHeight: 50,
-    margin: 'black solid 10px'
+    margin: 'black solid 10px',
+    border: '1px solid #afb8c7'
   }
 
   constructor(private _http : HttpClient,public _dialogRef: MatDialogRef<RegistrarEstudianteComponent>,
               private servicio: ServiciosService,private snackbar: MatSnackBar,
               @Inject(MAT_DIALOG_DATA) public data: {boolean: Boolean, id:number,nombre: string,
                 apellidoPaterno: string,apellidoMaterno: string,
-                grado: string,anio: number,meses: number,fecha:string,imagen : any
+                grado: string,anio: number,meses: number,fecha:string,imagen : any,firma: any
               }
               ) {
                 //obteniendo array de estudiantes para editar
@@ -221,17 +222,20 @@ async AgregarEstudiante(nombres, apellidoPatern , apellidoMater,datepiker): Prom
       // console.log(apellidoMaterno)
       // console.log(this.aniosDate)
       // console.log(this.mesesDate)
-     
+
+      this.base64 = this.signaturePad.toDataURL('imagen/png',0.5)
+
+      const firmaBlanca = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAAAyCAYAAAC+jCIaAAAAAXNSR0IArs4c6QAAAPJJREFUeF7t0jENAAAMw7CVP+mhyOcC6BF5ZwoEBRZ8ulTgwIIgKQBWktUpWAwkBcBKsjoFi4GkAFhJVqdgMZAUACvJ6hQsBpICYCVZnYLFQFIArCSrU7AYSAqAlWR1ChYDSQGwkqxOwWIgKQBWktUpWAwkBcBKsjoFi4GkAFhJVqdgMZAUACvJ6hQsBpICYCVZnYLFQFIArCSrU7AYSAqAlWR1ChYDSQGwkqxOwWIgKQBWktUpWAwkBcBKsjoFi4GkAFhJVqdgMZAUACvJ6hQsBpICYCVZnYLFQFIArCSrU7AYSAqAlWR1ChYDSQGwkqxOHydZADPuoqlPAAAAAElFTkSuQmCC'
 
       const grado = this.gradoEstudiante == undefined ? this.data.grado : this.gradoEstudiante;
       const anio = this.aniosDate == undefined ? this.data.anio : this.aniosDate;
       const meses = this.mesesDate == undefined ? this.data.meses : this.mesesDate;
       const imagen = this.reader.result == undefined ? this.data.imagen : this.reader.result;
-      
+      const firma = this.base64 == firmaBlanca ? this.data.firma : this.base64;
 
       const estudianteEditar = {nombre: nombre   ,apellidoPaterno : apellidoPaterno, apellidoMaterno: apellidoMaterno,
                                 fecha : datepiker,grado           : grado          ,anio            : anio           ,
-                                meses : meses    ,imagen          : imagen }
+                                meses : meses    ,imagen          : imagen, firma: firma}
       this.servicio.editarEstudiante(this.data.id,estudianteEditar).subscribe()
 
       this._dialogRef.close(estudianteEditar)

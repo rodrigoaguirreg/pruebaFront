@@ -122,13 +122,14 @@ export class CardEstudiantesComponent implements OnInit {
                                    apellidoPaterno: estudi.apellidoPaterno,apellidoMaterno: estudi.apellidoMaterno,
                                    grado          : estudi.grado          ,anio           : estudi.anio,
                                    meses          : estudi.meses          , actual: estudi.fecha,
-                                   imagen         : estudi.imagen, 
+                                   imagen         : estudi.imagen, firma: estudi.firma
                                   });
 
     this.servicio.obsService3$.next(this.datosAlumnoEditar)
 
     this._modal.open(RegistrarEstudianteComponent,{
-      width:'600px',
+      width:'650px',
+      height: '600px',
       data:{
         boolean: true,
         id: estudi.id,
@@ -139,7 +140,8 @@ export class CardEstudiantesComponent implements OnInit {
         anio: estudi.anio,
         meses: estudi.meses,
         fecha: estudi.fecha,
-        imagen : estudi.imagen
+        imagen : estudi.imagen,
+        firma: estudi.firma
       }
       ,disableClose:true
     }).afterClosed().subscribe(result => {
@@ -152,6 +154,7 @@ export class CardEstudiantesComponent implements OnInit {
         this.personas[estudi.id - 1].meses = result.meses;
         this.personas[estudi.id - 1].fecha = result.fecha;
         this.personas[estudi.id - 1].imagen = result.imagen;
+        this.personas[estudi.id - 1].firma = result.firma;
       }
     })
   }

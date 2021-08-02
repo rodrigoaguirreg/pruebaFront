@@ -54,8 +54,16 @@
 
 <div class="signaturePad">
   <label>firma</label>
-  <br>
-  <signature-pad [options]="signaturePadOptions"></signature-pad>
+  <hr>
+  <signature-pad [options]="signaturePadOptions" class="signaturePadMain"></signature-pad>
+  <div *ngIf="editarBoton == true" class="iconoMat">
+    <div class="nomeVen">
+    Si no se agrega una nueva firma,
+      se quedará la firma ya registrada
+    </div>
+  <mat-icon class="helpOutline">help_outline</mat-icon>
+  </div>
+ 
 </div>
 
 <div class="botonClase">
