@@ -26,7 +26,7 @@ export class ListaEstudiantesComponent implements OnInit {
 
   displayedColumns: string[] = ['seleccionar', 'imagen', 'nombre', 'apellidoPaterno',
     'apellidoMaterno', 'edad', 'grado',
-    'FechaCreacion', 'eliminarEstudiante', 'firma', 'editarEstudiante'];
+    'FechaCreacion', 'firma', 'eliminarEstudiante', 'editarEstudiante'];
   dataSource = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
