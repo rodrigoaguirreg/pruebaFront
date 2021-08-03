@@ -147,6 +147,7 @@ export class CardEstudiantesComponent implements OnInit {
       , disableClose: true
     }).afterClosed().subscribe(result => {
       if (result.nombre) {
+        console.log(estudi.id)
         this.personas.findIndex(x => {
           if (x.id == estudi.id) {
             const position = this.personas.indexOf(x);

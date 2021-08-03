@@ -5,3 +5,7 @@ table {
 .checkboxLista{
   right: -200px;
 }
+
+.imgTable{
+  max-width: 80px;
+}

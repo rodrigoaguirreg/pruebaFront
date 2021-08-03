@@ -18,6 +18,10 @@
       <th mat-header-cell *matHeaderCellDef> Nombre </th>
       <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
     </ng-container>
+    <ng-container matColumnDef="imagen">
+      <th mat-header-cell *matHeaderCellDef> imagen </th>
+      <td mat-cell *matCellDef="let element"><img class="imgTable" [src]="element.imagen"></td>
+    </ng-container>
 
     <!-- Weight Column -->
     <ng-container matColumnDef="apellidoPaterno">
@@ -41,6 +45,10 @@
     <ng-container matColumnDef="FechaCreacion">
       <th mat-header-cell *matHeaderCellDef> Fecha de Creación </th>
       <td mat-cell *matCellDef="let element"> {{element.actual}} </td>
+    </ng-container>
+      <ng-container matColumnDef="firma">
+      <th mat-header-cell *matHeaderCellDef> Firma </th>
+      <td mat-cell *matCellDef="let element"><img [src]="element.firma"></td>
     </ng-container>
     <ng-container matColumnDef="eliminarEstudiante">
       <th mat-header-cell *matHeaderCellDef> Eliminar Estudiante </th>

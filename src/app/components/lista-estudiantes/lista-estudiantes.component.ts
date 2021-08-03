@@ -24,9 +24,9 @@ export interface PeriodicElement {
 })
 export class ListaEstudiantesComponent implements OnInit {
 
-  displayedColumns: string[] = ['seleccionar', 'nombre', 'apellidoPaterno',
+  displayedColumns: string[] = ['seleccionar', 'imagen', 'nombre', 'apellidoPaterno',
     'apellidoMaterno', 'edad', 'grado',
-    'FechaCreacion', 'eliminarEstudiante', 'editarEstudiante'];
+    'FechaCreacion', 'eliminarEstudiante', 'firma', 'editarEstudiante'];
   dataSource = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -59,7 +59,7 @@ export class ListaEstudiantesComponent implements OnInit {
 
         this.servicio.invocarSnackBar('Estudiante retirado del aula')
 
-        this.EstudiantesArray = this.EstudiantesArray[0].filter(p => p.id != idEstudiante);
+        this.dataSource = this.EstudiantesArray[0].filter(p => p.id != idEstudiante);
       } else {
         this.servicio.invocarSnackBar('No se eliminó al estudiante')
 
