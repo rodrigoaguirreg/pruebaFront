@@ -146,15 +146,23 @@ export class CardEstudiantesComponent implements OnInit {
       ,disableClose:true
     }).afterClosed().subscribe(result => {
       if(result.nombre){
-        this.personas[estudi.id - 1].nombre = result.nombre;
-        this.personas[estudi.id - 1].apellidoPaterno = result.apellidoPaterno;
-        this.personas[estudi.id - 1].apellidoMaterno = result.apellidoMaterno;
-        this.personas[estudi.id - 1].grado = result.grado;
-        this.personas[estudi.id - 1].anio = result.anio;
-        this.personas[estudi.id - 1].meses = result.meses;
-        this.personas[estudi.id - 1].fecha = result.fecha;
-        this.personas[estudi.id - 1].imagen = result.imagen;
-        this.personas[estudi.id - 1].firma = result.firma;
+        
+        this.personas.findIndex(x => {
+          if(x.id == estudi.id){
+            
+            this.personas[estudi.id-1].nombre = result.nombre;
+            this.personas[estudi.id-1].apellidoPaterno = result.apellidoPaterno;
+            this.personas[estudi.id-1].apellidoMaterno = result.apellidoMaterno;
+            this.personas[estudi.id-1].grado = result.grado;
+            this.personas[estudi.id-1].anio = result.anio;
+            this.personas[estudi.id-1].meses = result.meses;
+            this.personas[estudi.id-1].fecha = result.fecha;
+            this.personas[estudi.id-1].imagen = result.imagen;
+            this.personas[estudi.id-1].firma = result.firma;
+            // console.log(estudi.id,'hola3')
+          }
+        })
+        
       }
     })
   }

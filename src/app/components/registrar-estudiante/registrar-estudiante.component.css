@@ -19,6 +19,7 @@
 .matCard{
 box-shadow: none;
 height: 520PX;
+
 }
 
 .close-button{
@@ -58,24 +59,60 @@ input#miArchivo{
 }
 .signaturePad{
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
-  background-color: #c4ccc6;
+  background-color: rgba(0, 0, 0, 0.05);
   max-width: 170px;
   text-align: center;
   position: relative;
   float: left;
   top: 20px;
+  border-radius: 7px;
 }
-.iconoMat{
-  position: absolute;
+/* .iconoMat{
+  position: relative;
   top: -60px;
   right: -93px;
 }
 .nomeVen{
   opacity: 0;
+  visibility: hidden;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
   max-width: 150px;
+  position: absolute;
+  width: 0;
+  height: 0;
 }
 
 .iconoMat:hover .nomeVen{
   opacity: 1;
+  visibility: visible;
+  width: auto;
+  height: auto;
+} */
+
+.iconoMat {
+  display : inline;
+  position: absolute;
+  top     : 4px;
+  right   : -32px;
+}
+
+.iconoMat .nomeVen {
+  visibility      : hidden;
+  width           : 120px;
+  background-color: #fff;
+  color           : black;
+  text-align      : center;
+  border-radius   : 7px;
+  padding         : 16px;
+  position        : absolute;
+  z-index         : 5;
+  opacity         : 0;
+  transition      : opacity 0.3s;
+  margin-left     : 23px;
+  box-shadow      : 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.iconoMat:hover .nomeVen {
+  visibility: visible;
+  opacity   : 1;
 }

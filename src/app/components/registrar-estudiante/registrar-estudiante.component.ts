@@ -236,6 +236,7 @@ async AgregarEstudiante(nombres, apellidoPatern , apellidoMater,datepiker): Prom
       const estudianteEditar = {nombre: nombre   ,apellidoPaterno : apellidoPaterno, apellidoMaterno: apellidoMaterno,
                                 fecha : datepiker,grado           : grado          ,anio            : anio           ,
                                 meses : meses    ,imagen          : imagen, firma: firma}
+                                
       this.servicio.editarEstudiante(this.data.id,estudianteEditar).subscribe()
 
       this._dialogRef.close(estudianteEditar)
