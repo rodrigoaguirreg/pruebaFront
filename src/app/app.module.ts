@@ -31,13 +31,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 
-import { HomeComponent                } from './components/home/home.component';
-import { RegistrarEstudianteComponent } from './components/registrar-estudiante/registrar-estudiante.component';
-import { CardEstudiantesComponent     } from './components/card-estudiantes/card-estudiantes.component';
-import { PipesPipe                    } from './components/pipes/pipes.pipe';
+import { HomeComponent                } from './components/estudiantes-modulo/home-estudiantes/home.component';
+import { RegistrarEstudianteComponent } from './components/estudiantes-modulo/registrar-estudiante/registrar-estudiante.component';
+import { CardEstudiantesComponent     } from './components/estudiantes-modulo/card-estudiantes/card-estudiantes.component';
 import { ModalConfirmacionComponent   } from './components/modal-confirmacion/modal-confirmacion.component';
+import { ListaEstudiantesComponent } from './components/estudiantes-modulo/lista-estudiantes/lista-estudiantes.component';
+import { HomePagosComponent} from './components/pagos-modulo/home-pagos/home-pagos.component'
 
-import { ListaEstudiantesComponent } from './components/lista-estudiantes/lista-estudiantes.component';
+import { PipesPipe                    } from './components/pipes/pipes.pipe';
 import { NoImagePipe               } from './components/pipes/no-image.pipe';
 import { registerLocaleData        } from '@angular/common';
 
@@ -57,6 +58,7 @@ registerLocaleData(localeES, 'es')
     ModalConfirmacionComponent,
     ListaEstudiantesComponent,
     NoImagePipe,
+    HomePagosComponent
   ],
   imports: [
     BrowserModule,

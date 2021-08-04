@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { filter } from 'rxjs/operators';
 import { ServiciosService } from 'src/app/services/servicios.service';
-import { ModalConfirmacionComponent } from '../modal-confirmacion/modal-confirmacion.component';
+import { ModalConfirmacionComponent } from '../../modal-confirmacion/modal-confirmacion.component';
 import { RegistrarEstudianteComponent } from '../registrar-estudiante/registrar-estudiante.component';
 
 
