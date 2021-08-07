@@ -72,6 +72,9 @@ export class ServiciosService {
   editarEstudiante(idEstudiante,personas: Estudiante){
     return this._http.put(`https://60db9d53801dcb0017291256.mockapi.io/Estudiantes/${idEstudiante}`,personas);
   }
+  obtenerDeudas(){
+    return this._http.get('https://60db9d53801dcb0017291256.mockapi.io/Deudas').pipe(m => m).toPromise();
+  }
 
 }
 interface id {

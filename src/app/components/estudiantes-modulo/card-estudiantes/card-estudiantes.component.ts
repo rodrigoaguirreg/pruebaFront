@@ -123,7 +123,7 @@ export class CardEstudiantesComponent implements OnInit {
       apellidoPaterno: estudi.apellidoPaterno, apellidoMaterno: estudi.apellidoMaterno,
       grado: estudi.grado, anio: estudi.anio,
       meses: estudi.meses, actual: estudi.fecha,
-      imagen: estudi.imagen, firma: estudi.firma
+      imagen: estudi.imagen, firma: estudi.firma, deudas: estudi.deudas
     });
 
     this.servicio.obsService3$.next(this.datosAlumnoEditar)
@@ -142,7 +142,8 @@ export class CardEstudiantesComponent implements OnInit {
         meses: estudi.meses,
         fecha: estudi.fecha,
         imagen: estudi.imagen,
-        firma: estudi.firma
+        firma: estudi.firma,
+        deudas: estudi.deudas
       }
       , disableClose: true
     }).afterClosed().subscribe(result => {
@@ -218,4 +219,5 @@ interface Estudiante {
   actual?: string;
   imagen?: any;
   firma?: any;
+  deudas : any;
 }
