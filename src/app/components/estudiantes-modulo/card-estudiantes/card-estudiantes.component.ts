@@ -93,7 +93,7 @@ export class CardEstudiantesComponent implements OnInit {
       if (confirmado) {
         if (this.miCheckList) {
           //elimina todos los estudiantes (checkAll)
-          for (let i = 0; i < this.personas.length; i++) {
+          for (let i in this.personas) {
             this.servicio.eliminarTodosEstudiantes(this.personas[i].id);
           }
           // this.personas.splice(0,this.personas.length)
@@ -102,11 +102,17 @@ export class CardEstudiantesComponent implements OnInit {
 
         } else if (this.estudiantesEliminar.length > 0) {
           //elimina los check seleccionados
-          for (let i = 0; i < this.estudiantesEliminar.length; i++) {
+          
+          console.log(this.estudiantesEliminar,'2');
+          for (let i=0; i < this.estudiantesEliminar.length; i++) {
+            console.log(i)
+            console.log(this.estudiantesEliminar[i].id,'1');
             this.servicio.eliminarEstudiante(this.estudiantesEliminar[i].id)
-
+            console.log(i,'uno')
+            
             this.personas = this.personas.filter(p => p.id != this.estudiantesEliminar[i].id);
-            this.estudiantesEliminar = this.estudiantesEliminar.filter(p => p.id != this.estudiantesEliminar[i].id)
+            console.log(i,'dos')
+            console.log(i)
           }
           this.servicio.invocarSnackBar('Se eliminaron todos los estudiantes seleccionados');
 
