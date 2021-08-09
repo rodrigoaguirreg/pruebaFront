@@ -268,7 +268,7 @@ export class RegistrarEstudianteComponent implements OnInit {
    const mes = 1;
    const anio = 2;
 
-   //constantes de meses
+   //constantes de meses segun datepicker
    const enero = 1;
    const febrero = 2;
 
@@ -286,8 +286,8 @@ export class RegistrarEstudianteComponent implements OnInit {
    const diciembre = 10;
 
    //descuentos variables
-    let descuentoMesTrue = 0;
-    let descuentoMesFalse = 0;
+    let descuentoMesTrue = null;
+    let descuentoMesFalse = null;
 
     let descuentoAnioTrue = 30;
     let descuentoAnioFalse = 25;
