@@ -261,7 +261,7 @@ export class RegistrarEstudianteComponent implements OnInit {
     this.descuentoPorAñoParOImpar(anioPar,30,25);
 
     
-    
+    //limite de descuento
     this.deudasAcomulada[0].map( (x,id) => {
       if(x > 100){
         this.deuda["deuda"][id].monto = this.obtenerDeuda[this.seccion]["deuda"][id].monto - 100;
