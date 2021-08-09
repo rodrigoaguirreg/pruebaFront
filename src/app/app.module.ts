@@ -58,7 +58,7 @@ registerLocaleData(localeES, 'es')
     ModalConfirmacionComponent,
     ListaEstudiantesComponent,
     NoImagePipe,
-    HomePagosComponent
+    HomePagosComponent,
   ],
   imports: [
     BrowserModule,

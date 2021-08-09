@@ -65,6 +65,8 @@ export class RegistrarEstudianteComponent implements OnInit {
   idestudiante: any = [];
 
   cantDescuento;
+  
+  datepickerArray;
 
   @ViewChild(SignaturePad) signaturePad: SignaturePad;
   signaturePadOptions = {
@@ -194,82 +196,11 @@ export class RegistrarEstudianteComponent implements OnInit {
   //termina imagen
 
   async AgregarEstudiante(nombres, apellidoPatern, apellidoMater, datepiker): Promise<any> {
-   //mespicker[dia]
-   //this.deuda[matricula]
    
-   //mespicker
-   const dia = 0;
-   const mes = 1;
-   const anio = 2;
-   
-   //constantes de meses
-   const enero = 1;
-   const febrero = 2;
-   const matricula = 0;
-   const marzo = 1;
-   const abril = 2;
-   const mayo = 3;
-   const junio = 4;
-   const julio = 5;
-   const agosto = 6;
-   const septiembre = 7;
-   const octubre = 8;
-   const noviembre = 9;
-   const diciembre = 10;
-   
-   let datepickerArray = datepiker.split("/");
-
-   let mesEneroOFebreroBoolean = (datepickerArray[mes] == enero || datepickerArray[mes] == febrero);
-
-   let anioPar = (datepickerArray[anio] % 2 == 0);
-
-   let mesPar  = (datepickerArray[mes] % 2 == 0)
-
-    console.log(anioPar)
-
-    let DeudasIniciales = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-
-    this.deudasAcomulada.push(DeudasIniciales);
-    //asignando deudas por seccion
-    if (this.gradoEstudiante.includes("inicial")) {
-      this.deuda = this.compararPrecio[0];
-      this.seccion = 0;
-    //descuento por mes par o impar para inicial
-      this.descuentoPorMesParOImpar(mesPar,30,20);
-    } else if (this.gradoEstudiante.includes("primaria")) {
-      this.deuda = this.compararPrecio[1];
-      //descuento por julio o diciembre
-      this.descuentoPrimeroYmayorSeisAños(julio,diciembre,10,10);
-      this.seccion = 1;
-      //descuento por mes par o impar para primaria
-      this.descuentoPorMesParOImpar(mesPar,40,25);
-
-    } else {
-      this.deuda = this.compararPrecio[2];
-      this.seccion = 2;
-      //descuento por mes par o impar para secundaria
-      this.descuentoPorMesParOImpar(mesPar,40,25);
-
-    }
-    // if(this.obtenerDeuda[this.seccion]["deuda"][0].monto - this.deuda["deuda"][0].monto >= 100){
-
-    // } else {}
-    //descuento por cumpleaños validado enero y febrero
-    this.descuentoCumpleaños(mesEneroOFebreroBoolean,matricula,datepickerArray,mes,50,40);
-
-    //descuento por año par o impar
-    this.descuentoPorAñoParOImpar(anioPar,30,25);
-
-    
-    //limite de descuento
-    this.deudasAcomulada[0].map( (x,id) => {
-      if(x > 100){
-        this.deuda["deuda"][id].monto = this.obtenerDeuda[this.seccion]["deuda"][id].monto - 100;
-      }
-    })
-    console.log(this.deudasAcomulada[0])
-
-
+    this.datepickerArray = datepiker.split("/");
+    //descuentos
+    this.DescuentosGeneral(this.datepickerArray);
+    //finaliza descuetos
 
     this.base64 = this.signaturePad.toDataURL('imagen/png', 0.5);
     console.log(this.base64);
@@ -331,50 +262,131 @@ export class RegistrarEstudianteComponent implements OnInit {
     }
 
   }
+//comienzan descuentos
+  DescuentosGeneral(datepicker){
+   const dia = 0;
+   const mes = 1;
+   const anio = 2;
+
+   //constantes de meses
+   const enero = 1;
+   const febrero = 2;
+
+   //constante por id
+   const matricula = 0;
+   const marzo = 1;
+   const abril = 2;
+   const mayo = 3;
+   const junio = 4;
+   const julio = 5;
+   const agosto = 6;
+   const septiembre = 7;
+   const octubre = 8;
+   const noviembre = 9;
+   const diciembre = 10;
+
+   //descuentos variables
+    let descuentoMesTrue = 0;
+    let descuentoMesFalse = 0;
+
+    let descuentoAnioTrue = 30;
+    let descuentoAnioFalse = 25;
+
+    let descuentoEneroOFebrero = 50;
+    let descuentoCumpleanio = 40;
+
+   
+   let datepickerFuncion = datepicker;
+
+   //descuento para matriculo(enero o febrero) || mes(datepickerArray[mes]-2)
+   let mesEneroOFebreroBoolean = (datepickerFuncion[mes] == enero || datepickerFuncion[mes] == febrero);
+   let descuentoMatriculaOCumpleanio = (mesEneroOFebreroBoolean ? descuentoEneroOFebrero : descuentoCumpleanio);
+   let descuentoMatriculaOMeses = (mesEneroOFebreroBoolean ? matricula : (datepickerFuncion[mes] - 2))
+
+   //calculando si es anio par o impar
+   let anioPar = (datepickerFuncion[anio] % 2 == 0);
+   //calculando descuento si es anio par o impar
+   let descuentoAnio = anioPar ? descuentoAnioTrue : descuentoAnioFalse;
+   
+   //calculando si es mes par o impar
+   let mesPar  = (datepickerFuncion[mes] % 2 == 0)
+   //calculando descuento si es mes par o impar
+
+    let DeudasIniciales = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    this.deudasAcomulada.push(DeudasIniciales);
+    //asignando deudas por seccion
+    if (this.gradoEstudiante.includes("inicial")) {
+      this.seccion = 0;
+    //descuento por mes par o impar para inicial
+      descuentoMesTrue = 30;
+      descuentoMesFalse = 20;
+    } else if (this.gradoEstudiante.includes("primaria")) {
+      this.seccion = 1;
+      //descuento por mes par o impar para primaria
+      descuentoMesTrue = 40;
+      descuentoMesFalse = 25;
+      
+    } else {
+      this.seccion = 2;
+      //descuento por mes par o impar para secundaria
+      descuentoMesTrue = 40;
+      descuentoMesFalse = 25;
+    }
+
+   let descunetoMes  = mesPar ? descuentoMesTrue : descuentoMesFalse;
+
+    //asignando por seccion
+    this.deuda = this.compararPrecio[this.seccion];
+    //descuento por mes
+    this.descuentoPorMesParOImpar(descunetoMes);
+    
+    //descuento por julio o diciembre
+    this.descuentoPrimeroYmayorSeisAños(julio,diciembre,10);
+    
+    //descuento por cumpleaños validado enero y febrero
+    this.descuentoCumpleaños(descuentoMatriculaOMeses,descuentoMatriculaOCumpleanio);
+
+    //descuento por año par o impar
+    this.descuentoPorAñoParOImpar(descuentoAnio);
+
+    
+    //limite de descuento
+    this.deudasAcomulada[0].map( (x,id) => {
+      if(x > 100){
+        this.deuda["deuda"][id].monto = this.obtenerDeuda[this.seccion]["deuda"][id].monto - 100;
+      }
+    })
+    console.log(this.deudasAcomulada[0])
+
+  }
 
   //descuento por mes de cumpleaños (enero || febrero = matricula)
-  descuentoCumpleaños(BooleanoEneroOFebrero,matricula,fechaDateArray,mesDate,descuentoTrue,descuentoFalse){
-
-    if (BooleanoEneroOFebrero) {
-      this.deuda["deuda"][matricula].monto -= descuentoTrue;
-      this.deudasAcomulada[0][matricula] += descuentoTrue;
-    } else {
-      this.deuda["deuda"][fechaDateArray[mesDate] - 2].monto -= descuentoFalse;
-      this.deudasAcomulada[0][fechaDateArray[mesDate] - 2] += descuentoFalse;
-    }
-
+  descuentoCumpleaños(matriculaOMes,descuento){
+      this.deuda["deuda"][matriculaOMes].monto -= descuento;
+      this.deudasAcomulada[0][matriculaOMes] += descuento;
   }
 
-  descuentoPorAñoParOImpar(datepickerPar,descuentoTrue,descuentoFalse){
+  descuentoPorAñoParOImpar(descuento){
     //datepickerPar = datepickerArray[2] % 2 == 0
-    if (datepickerPar) {
-      this.loopDescuento(1,descuentoTrue);
-
-    } else {
-      this.loopDescuento(1,descuentoFalse);
-    }
+    this.loopDescuento(1,descuento);
 
   }
 
-  descuentoPorMesParOImpar(datepickerPar,descuentoTrue,descuentoFalse){
+  descuentoPorMesParOImpar(descuento){
     //datepickerPar = datepickerArray[1] % 2 == 0
-    if (datepickerPar) {
-      this.loopDescuento(1,descuentoTrue);
-    } else {
-      this.loopDescuento(1,descuentoFalse);
-    }
+    this.loopDescuento(1,descuento);
 
   }
   //primerMes = julio,segundoMes = diciembre
   //descuento si esta en primero y es mayor a 6 años 
-  descuentoPrimeroYmayorSeisAños(primerMes,segundoMes,descuentoPrimerMes,descuentoSegundoMes){
+  descuentoPrimeroYmayorSeisAños(primerMes,segundoMes,descuentos){
+    if ( this.gradoEstudiante.includes("1ero primaria") && this.aniosDate >= 6) {
+      this.deuda["deuda"][primerMes].monto -= descuentos;
+      this.deudasAcomulada[0][primerMes] += descuentos;
 
-    if (this.gradoEstudiante.includes("1ero") && this.aniosDate >= 6) {
-      this.deuda["deuda"][primerMes].monto -= descuentoPrimerMes;
-      this.deudasAcomulada[0][primerMes] += descuentoPrimerMes;
-
-      this.deuda["deuda"][segundoMes].monto -= descuentoSegundoMes;
-      this.deudasAcomulada[0][segundoMes] += descuentoSegundoMes;
+      this.deuda["deuda"][segundoMes].monto -= descuentos;
+      this.deudasAcomulada[0][segundoMes] += descuentos;
     }
 
   }
@@ -388,7 +400,7 @@ export class RegistrarEstudianteComponent implements OnInit {
     }
 
   }
-
+// finalizan descuentos
 
   editarEstudiante(nombre, apellidoPaterno, apellidoMaterno, datepiker) {
 
