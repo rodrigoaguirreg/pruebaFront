@@ -104,7 +104,7 @@ export class CardEstudiantesComponent implements OnInit {
           //elimina los check seleccionados
           
           console.log(this.estudiantesEliminar,'2');
-          for (let i=0; i < this.estudiantesEliminar.length; i++) {
+          for (let i in this.estudiantesEliminar) {
             console.log(i)
             console.log(this.estudiantesEliminar[i].id,'1');
             this.servicio.eliminarEstudiante(this.estudiantesEliminar[i].id)

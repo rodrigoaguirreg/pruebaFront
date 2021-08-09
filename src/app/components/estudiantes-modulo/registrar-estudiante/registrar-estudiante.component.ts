@@ -64,6 +64,8 @@ export class RegistrarEstudianteComponent implements OnInit {
 
   idestudiante: any = [];
 
+  cantDescuento;
+
   @ViewChild(SignaturePad) signaturePad: SignaturePad;
   signaturePadOptions = {
     penColor: 'rgb(66,133,244)',
@@ -192,120 +194,92 @@ export class RegistrarEstudianteComponent implements OnInit {
   //termina imagen
 
   async AgregarEstudiante(nombres, apellidoPatern, apellidoMater, datepiker): Promise<any> {
-    let mespciker = datepiker.split("/");
+   //mespicker[dia]
+   //this.deuda[matricula]
+   
+   //mespicker
+   const dia = 0;
+   const mes = 1;
+   const anio = 2;
+   
+   //constantes de meses
+   const enero = 1;
+   const febrero = 2;
+   const matricula = 0;
+   const marzo = 1;
+   const abril = 2;
+   const mayo = 3;
+   const junio = 4;
+   const julio = 5;
+   const agosto = 6;
+   const septiembre = 7;
+   const octubre = 8;
+   const noviembre = 9;
+   const diciembre = 10;
+   
+   let datepickerArray = datepiker.split("/");
 
-    this.dia = 'marzo'
+   let mesEneroOFebreroBoolean = (datepickerArray[mes] == enero || datepickerArray[mes] == febrero);
+
+   let anioPar = (datepickerArray[anio] % 2 == 0);
+
+   let mesPar  = (datepickerArray[mes] % 2 == 0)
+
+    console.log(anioPar)
 
     let DeudasIniciales = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
     this.deudasAcomulada.push(DeudasIniciales);
     //asignando deudas por seccion
     if (this.gradoEstudiante.includes("inicial")) {
       this.deuda = this.compararPrecio[0];
       this.seccion = 0;
+    //descuento por mes par o impar para inicial
+      this.descuentoPorMesParOImpar(mesPar,30,20);
     } else if (this.gradoEstudiante.includes("primaria")) {
-      //descuento por julio o diciembre
       this.deuda = this.compararPrecio[1];
-      if (this.gradoEstudiante.includes("1ero") && this.aniosDate >= 6) {
-        this.deuda["deuda"][5].monto -= 10;
-        this.deudasAcomulada[0][5] += 10;
-
-        this.deuda["deuda"][10].monto -= 10;
-        this.deudasAcomulada[0][10] += 10;
-
-      }
+      //descuento por julio o diciembre
+      this.descuentoPrimeroYmayorSeisAños(julio,diciembre,10,10);
       this.seccion = 1;
+      //descuento por mes par o impar para primaria
+      this.descuentoPorMesParOImpar(mesPar,40,25);
 
     } else {
       this.deuda = this.compararPrecio[2];
       this.seccion = 2;
+      //descuento por mes par o impar para secundaria
+      this.descuentoPorMesParOImpar(mesPar,40,25);
+
     }
     // if(this.obtenerDeuda[this.seccion]["deuda"][0].monto - this.deuda["deuda"][0].monto >= 100){
 
     // } else {}
-    //descuento por cumpleaños validar enero y febrero
-    if (mespciker[1] == 1 || mespciker[1] == 2) {
-      this.deuda["deuda"][0].monto -= 50;
-      this.deudasAcomulada[0][0] += 50;
-
-    } else {
-      let mesSeleccionado = this.deuda["deuda"][mespciker[1] - 2].concepto;
-      this.deuda["deuda"][mespciker[1] - 2].monto -= 40;
-      this.deudasAcomulada[0][mespciker[1] - 2] += 40;
-
-    }
+    //descuento por cumpleaños validado enero y febrero
+    this.descuentoCumpleaños(mesEneroOFebreroBoolean,matricula,datepickerArray,mes,50,40);
 
     //descuento por año par o impar
-    if (mespciker[2] % 2 == 0) {
+    this.descuentoPorAñoParOImpar(anioPar,30,25);
 
-      for (let i = 1; i < this.deuda["deuda"].length; i++) {
-        this.deuda["deuda"][i].monto -= 30;
-        this.deudasAcomulada[0][i] += 30
+    
+    
+    this.deudasAcomulada[0].map( (x,id) => {
+      if(x > 100){
+        this.deuda["deuda"][id].monto = this.obtenerDeuda[this.seccion]["deuda"][id].monto - 100;
       }
+    })
+    console.log(this.deudasAcomulada[0])
 
-    } else {
-      for (let i = 1; i < this.deuda["deuda"].length; i++) {
-        this.deuda["deuda"][i].monto -= 25;
-        this.deudasAcomulada[0][i] += 25
-
-      }
-    }
-    //descuento por mes par o impar
-    if (this.gradoEstudiante.includes("inicial")) {
-      if (mespciker[1] % 2 == 0) {
-        for (let i = 1; i < this.deuda["deuda"].length; i++) {
-          this.deuda["deuda"][i].monto -= 30;
-          this.deudasAcomulada[0][i] += 30
-        }
-      } else {
-        for (let i = 1; i < this.deuda["deuda"].length; i++) {
-          this.deuda["deuda"][i].monto -= 20;
-          this.deudasAcomulada[0][i] += 20
-
-        }
-      }
-    } else {
-      if (mespciker[1] % 2 == 0) {
-        for (let i = 1; i < this.deuda["deuda"].length; i++) {
-          this.deuda["deuda"][i].monto -= 40;
-          this.deudasAcomulada[0][i] += 40
-
-        }
-      } else {
-        for (let i = 1; i < this.deuda["deuda"].length; i++) {
-          this.deuda["deuda"][i].monto -= 25;
-          this.deudasAcomulada[0][i] += 25;
-
-        }
-      }
-    }
-
-
-
-
-    console.log(this.deudasAcomulada)
-
-
-    //this.deuda["deuda"][ide].monto + 
-    // this.obtenerDeuda[this.seccion]["deuda"][ide].monto
-    // for (let ide in this.deudasAcomulada[0]) {
-    //   if (this.deudasAcomulada[0][ide] > 100) {
-    //     console.log("sobrepase los 100")
-    //   }
-    // }
-    for (let ide in this.deudasAcomulada[0]) {
-      if (this.obtenerDeuda[this.seccion]["deuda"][ide].monto - this.deuda["deuda"][ide].monto > 100) {
-        this.deuda["deuda"][ide].monto = this.obtenerDeuda[this.seccion]["deuda"][ide].monto - 100;
-      }
-    }
 
 
     this.base64 = this.signaturePad.toDataURL('imagen/png', 0.5);
     console.log(this.base64);
 
+
     const estudianteAgregar: Estudiante[] = [{
       nombre: nombres, apellidoPaterno: apellidoPatern, apellidoMaterno: apellidoMater, fecha: datepiker, grado: this.gradoEstudiante,
       anio: this.aniosDate, meses: this.mesesDate, actual: this.fechaActual, imagen: this.reader.result, firma: this.base64, deudas: this.deuda
     }]
+
 
     if (this.obteniendoEstudiantes.length == 0) {
       const estudiantecreado = this.servicio.crearNuevoEstudiante(estudianteAgregar[0], datepiker);
@@ -357,6 +331,64 @@ export class RegistrarEstudianteComponent implements OnInit {
     }
 
   }
+
+  //descuento por mes de cumpleaños (enero || febrero = matricula)
+  descuentoCumpleaños(BooleanoEneroOFebrero,matricula,fechaDateArray,mesDate,descuentoTrue,descuentoFalse){
+
+    if (BooleanoEneroOFebrero) {
+      this.deuda["deuda"][matricula].monto -= descuentoTrue;
+      this.deudasAcomulada[0][matricula] += descuentoTrue;
+    } else {
+      this.deuda["deuda"][fechaDateArray[mesDate] - 2].monto -= descuentoFalse;
+      this.deudasAcomulada[0][fechaDateArray[mesDate] - 2] += descuentoFalse;
+    }
+
+  }
+
+  descuentoPorAñoParOImpar(datepickerPar,descuentoTrue,descuentoFalse){
+    //datepickerPar = datepickerArray[2] % 2 == 0
+    if (datepickerPar) {
+      this.loopDescuento(1,descuentoTrue);
+
+    } else {
+      this.loopDescuento(1,descuentoFalse);
+    }
+
+  }
+
+  descuentoPorMesParOImpar(datepickerPar,descuentoTrue,descuentoFalse){
+    //datepickerPar = datepickerArray[1] % 2 == 0
+    if (datepickerPar) {
+      this.loopDescuento(1,descuentoTrue);
+    } else {
+      this.loopDescuento(1,descuentoFalse);
+    }
+
+  }
+  //primerMes = julio,segundoMes = diciembre
+  //descuento si esta en primero y es mayor a 6 años 
+  descuentoPrimeroYmayorSeisAños(primerMes,segundoMes,descuentoPrimerMes,descuentoSegundoMes){
+
+    if (this.gradoEstudiante.includes("1ero") && this.aniosDate >= 6) {
+      this.deuda["deuda"][primerMes].monto -= descuentoPrimerMes;
+      this.deudasAcomulada[0][primerMes] += descuentoPrimerMes;
+
+      this.deuda["deuda"][segundoMes].monto -= descuentoSegundoMes;
+      this.deudasAcomulada[0][segundoMes] += descuentoSegundoMes;
+    }
+
+  }
+
+  //loop que descuenta desde la posicion inicio 
+  loopDescuento(inicio,cantidadDescuento){
+
+    for (let i = inicio; i < this.deuda["deuda"].length; i++) {
+      this.deuda["deuda"][i].monto -= cantidadDescuento;
+      this.deudasAcomulada[0][i] += cantidadDescuento;
+    }
+
+  }
+
 
   editarEstudiante(nombre, apellidoPaterno, apellidoMaterno, datepiker) {
 

@@ -102,7 +102,7 @@ export class ListaEstudiantesComponent implements OnInit {
 
   }
   eliminarCheckBox() {
-    for (let i = 0; i < this.estudiantesEliminar.length; i++) {
+    for (let i in this.estudiantesEliminar) {
       this.servicio.eliminarEstudiante(this.estudiantesEliminar[i].id);
       this.EstudiantesArray[0] = this.EstudiantesArray[0].filter(p => p.id != this.estudiantesEliminar[i].id);
       this.estudiantesEliminar = this.estudiantesEliminar.filter(p => p.id != this.estudiantesEliminar[i].id);
