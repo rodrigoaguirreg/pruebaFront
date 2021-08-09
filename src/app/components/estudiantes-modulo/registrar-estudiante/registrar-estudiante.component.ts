@@ -334,13 +334,13 @@ export class RegistrarEstudianteComponent implements OnInit {
       descuentoMesFalse = 25;
     }
 
-   let descunetoMes  = mesPar ? descuentoMesTrue : descuentoMesFalse;
+   let descuentoMes  = mesPar ? descuentoMesTrue : descuentoMesFalse;
 
     //asignando por seccion
     this.deuda = this.compararPrecio[this.seccion];
     //descuento por mes
-    this.descuentoPorMesParOImpar(descunetoMes);
-    
+    this.loopDescuento(1,descuentoMes);
+        
     //descuento por julio o diciembre
     this.descuentoPrimeroYmayorSeisAños(julio,diciembre,10);
     
@@ -348,7 +348,7 @@ export class RegistrarEstudianteComponent implements OnInit {
     this.descuentoCumpleaños(descuentoMatriculaOMeses,descuentoMatriculaOCumpleanio);
 
     //descuento por año par o impar
-    this.descuentoPorAñoParOImpar(descuentoAnio);
+    this.loopDescuento(1,descuentoAnio);
 
     
     //limite de descuento
@@ -357,7 +357,6 @@ export class RegistrarEstudianteComponent implements OnInit {
         this.deuda["deuda"][id].monto = this.obtenerDeuda[this.seccion]["deuda"][id].monto - 100;
       }
     })
-    console.log(this.deudasAcomulada[0])
 
   }
 
@@ -367,17 +366,6 @@ export class RegistrarEstudianteComponent implements OnInit {
       this.deudasAcomulada[0][matriculaOMes] += descuento;
   }
 
-  descuentoPorAñoParOImpar(descuento){
-    //datepickerPar = datepickerArray[2] % 2 == 0
-    this.loopDescuento(1,descuento);
-
-  }
-
-  descuentoPorMesParOImpar(descuento){
-    //datepickerPar = datepickerArray[1] % 2 == 0
-    this.loopDescuento(1,descuento);
-
-  }
   //primerMes = julio,segundoMes = diciembre
   //descuento si esta en primero y es mayor a 6 años 
   descuentoPrimeroYmayorSeisAños(primerMes,segundoMes,descuentos){
